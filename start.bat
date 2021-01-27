@@ -1,0 +1,1 @@
+python -i start.py 20000
