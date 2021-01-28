@@ -32,8 +32,7 @@ e=None
 def get_instruction(field:Field):
     global f
     global e
-    if field.Tick>10:
-        print(field.SelfRobots[1].Position.x)
+    field.Postion#这是一个运行时错误
     return [(20, -20), (10, 10), (0, 0), (0, 0), (0, 0)],0
     if(field.SelfRobots[0].Rotation<-179 or field.SelfRobots[0].Rotation>179):
         return [(125, 125), (0, 0), (0, 0), (0, 0), (0, 0)],0
