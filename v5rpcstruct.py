@@ -32,9 +32,9 @@ class JudgeResultEvent:
         FreeKickRightBot = 4
         FreeKickLeftTop = 5
         FreeKickLeftBot = 6
-    Type: int  # ResultType
-    OffensiveTeam: int  # Team
-    Reason: str
+    type: int  # ResultType
+    offensive_team: int  # Team
+    reason: str
 class EventArguments:
     JudgeResult: Optional[JudgeResultEvent]
 class Version:
@@ -44,19 +44,19 @@ class Vector2:
     x: float
     y: float
 class Wheel:
-    LeftSpeed: float
-    RightSpeed: float
+    left_speed: float
+    right_speed: float
 
 
 class Robot:
-    Position: Vector2
-    Rotation: float
-    Wheel: Wheel
+    position: Vector2
+    rotation: float
+    wheel: Wheel
 
 class Ball:
-    Position: Vector2
+    position: Vector2
 class Field:
-    SelfRobots: List[Robot]
-    OpponentRobots: List[Robot]
-    Ball: Ball
-    Tick: int
+    self_robots: List[Robot]
+    opponent_robots: List[Robot]
+    ball: Ball
+    tick: int

@@ -4,26 +4,6 @@ import proto.DataStructures_pb2
 import uuid
 import v5strategy
 
-class V5receiver:#平台发出请求，adapter接收
-    def __init__(self) -> None:
-        self.client=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
-        self.client.bind(('127.0.0.1', xxx))#平台的port
-        self.client.settimeout(10)#10stimeout
-        self.isDisposed=False
-        self.cacheitem=None
-        self.breakFlag=False
-    
-    def Call(self,payload:bytes,retryInterval=50):
-        def SendMe():
-            self.client.send(outBuffer)
-
-        packet=V5Packet().MakeRequestPacket(payload)
-        outBuffer=packet.packet2bytes()
-        outGuid=packet.requestId#存放uuid(GUID)
-        
-        #TODO
-
-
 class CacheItem:
     def __init__(self) -> None:
         self.requestId=None#UUID
@@ -69,7 +49,6 @@ class transfer:#protobuf信息->bytes
     def ServerRoutine(self,protobufmsg):
         self.call.ParseFromString(protobufmsg)
         case=self.call.WhichOneof("method")#返回被激活的oneof的名字
-        print(case)#DELETE
         if case == "on_event":
             v5strategy.on_event(self.call.on_event.type,self.call.on_event.arguments)#未经测试
 
@@ -93,16 +72,28 @@ class transfer:#protobuf信息->bytes
                 instructionresult.wheels.append(wheel_i_th)
             return instructionresult.SerializeToString()
         elif case == "get_placement":
+            Placement=v5strategy.get_placement(self.call.get_placement.field)
             placementresult=proto.API_pb2.GetPlacementResult()
-            for i in range(5):
-                place_i_th=placementresult.placement.robots.add()
-                #place_i_th
 
+            ball=proto.DataStructures_pb2.Ball()
+            ball.position.x=float(Placement[5][0])
+            ball.position.y=float(Placement[5][1])
+            placementresult.placement.ball.position.x=float(Placement[5][0])
+            placementresult.placement.ball.position.y=float(Placement[5][1])
+            for i in range(5):
+                place_i_th=proto.DataStructures_pb2.Robot()
+                place_i_th.position.x=float(Placement[i][0])
+                place_i_th.position.y=float(Placement[i][1])
+                place_i_th.rotation=float(Placement[i][2])
+                place_i_th.wheel.left_speed=0
+                place_i_th.wheel.right_speed=0
+                placementresult.placement.robots.append(place_i_th)
+            return placementresult.SerializeToString()
         else:
             print("哪个也没进，麻了")
 
 class V5Packet:#通信协议
-    MAGIC=0x2b2b3556
+    MAGIC=0x2b2b3556#魔数
     REPLY_MASK=0x1
     def __init__(self) -> None:
         self.magic=None#uint
@@ -148,7 +139,7 @@ class V5Packet:#通信协议
         return press
     def bytes2packet(self,press:bytes):
         self.magic=int.from_bytes(press[0:4],byteorder="little")
-        self.requestId=uuid.UUID(bytes=press[4:20])#没问题了
+        self.requestId=uuid.UUID(bytes=press[4:20])
         self.flags=int.from_bytes(press[20:21],byteorder="little")
         self.length=int.from_bytes(press[21:23],byteorder="little")
         self.payload=press[23:]
