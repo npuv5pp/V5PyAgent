@@ -3,7 +3,7 @@ from typing import Tuple
 from v5rpc import *
 
 
-def on_event(eventType: int, args: EventArguments):
+def on_event(event_type: int, args: EventArguments):
     event = {
         0: lambda: print(args.judge_result.reason),
         1: lambda: print("Match Start"),
@@ -13,15 +13,15 @@ def on_event(eventType: int, args: EventArguments):
         5: lambda: print("Overtime Start"),
         6: lambda: print("Penalty Shootout Start")
     }
-    event[eventType]()
+    event[event_type]()
 
 
-def get_team_info(serverVersion: int) -> str:
+def get_team_info(server_version: int) -> str:
     version = {
         0: "V1.0",
         1: "V1.1"
     }
-    print(f'server rpc version: {version.get(serverVersion, "V1.0")}')
+    print(f'server rpc version: {version.get(server_version, "V1.0")}')
     return 'Python Strategy Server'
 
 
