@@ -1,8 +1,8 @@
 import sys
 import os
-import V5RPC
 
 sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/' + '..'))
+import V5RPC
 
 args = sys.argv
 # 0参数：start.py
