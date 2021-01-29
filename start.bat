@@ -1,1 +1,1 @@
-python -i start.py 20000
+python -i adapter/start.py 20000

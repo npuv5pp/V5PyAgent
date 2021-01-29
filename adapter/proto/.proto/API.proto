@@ -3,7 +3,7 @@ import "DataStructures.proto";
 import "Events.proto";
 
 message RPCCall {
-    oneof method {//只有一个会存在，所以传入一个时清除其他
+    oneof method {//只有一个会存在,所以传入一个时清除其他
         OnEventCall on_event = 1;
         GetTeamInfoCall get_team_info = 2;
         GetInstructionCall get_instruction = 3;
