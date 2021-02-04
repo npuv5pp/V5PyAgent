@@ -1,1 +1,0 @@
-python -i adapter/start.py 20000
