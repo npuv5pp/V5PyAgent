@@ -1,6 +1,6 @@
 import socket
-import proto.API_pb2
-import proto.DataStructures_pb2
+import adapter.proto.API_pb2
+import adapter.proto.DataStructures_pb2
 import uuid
 import v5strategy
 

@@ -1,6 +1,8 @@
 import random
 from typing import Tuple
-from v5rpc import *
+
+from V5RPC import *
+from adapter.v5rpc import *
 
 
 def on_event(event_type: int, args: EventArguments):
