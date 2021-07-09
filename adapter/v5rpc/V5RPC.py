@@ -30,7 +30,7 @@ class V5Poster:
         self.lastResponse = CacheItem()  # CacheItem
 
     def run(self):
-        if self.isDisposed is True:  # 其实不知道什么作用
+        if self.isDisposed == True:  # 其实不知道什么作用
             raise socket.error  # Disposed is True
         self.breakFlag = False  # 其实不知道什么作用
         while (not self.isDisposed) and (not self.breakFlag):
@@ -38,12 +38,12 @@ class V5Poster:
                 data, address = self.client.recvfrom(1024)  # data为接收的数据
                 in_packet = V5Packet()
                 in_packet.bytes2packet(data)  # data经由packet解包
-                if self.lastResponse.requestId is in_packet.requestId:  # 重发
+                if self.lastResponse.requestId == in_packet.requestId:  # 重发
                     response = self.lastResponse.response  # bytes类型
                 else:
                     strategy = Transfer()
                     response = strategy.server_routine(in_packet.payload)
-                    if response is None:
+                    if response == None:
                         response = bytes()
                     self.lastResponse.requestId = in_packet.requestId
                     self.lastResponse.response = response
@@ -153,10 +153,10 @@ class V5Packet:
         return self
 
     def check_flag(self, mask: int):  # 对应原代码的get
-        return (self.flags & mask) is not 0
+        return (self.flags & mask) != 0
 
     def assign_flag(self, mask: int, x: bool):  # 对应原代码的set
-        if x is True:
+        if x == True:
             self.flags = self.flags | mask
         else:
             self.flags = self.flags & (0b11111111 - mask)  # 相当于flag 与 (八位取反mask)
